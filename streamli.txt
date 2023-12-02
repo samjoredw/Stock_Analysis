@@ -1,0 +1,207 @@
+import streamlit as st
+from PIL import Image
+import pandas as pd
+import time
+from matplotlib import pyplot as plt
+import numpy as np
+
+st.title("I'm  a Streamlit Title",)
+
+st.header("I'm a Header")
+st.subheader("I'm sub-header")
+
+st.text("I'm a text block")
+st.text("I'm another text block")
+st.header("") # This is how you do newlines.
+st.markdown("**I'm a bold text block**")
+st.text("") # Or you can do this for newlines.
+st.markdown("# I'm another title using HTML")
+st.markdown("## I'm another header using HTML")
+st.markdown("### I'm another sub-header using HTML")
+st.markdown("*I'm an italic text block*")
+st.markdown('>"Now I am a block quote. Destroyer of worlds."')
+st.markdown("""
+    - This is
+    - An unordered
+    - List
+""")
+st.markdown("---") # This is a horizontal rule
+st.markdown("`this_is_a.code(block)`")
+st.markdown("[Link to a Website](https://samportfolio-154f06122c3d.herokuapp.com/)")
+
+st.markdown("""
+| THIS | IS |
+| --------- | --------- |
+| a table | with stuff |
+| inside | of it |
+""")
+
+st.caption("Note: I'm a caption")
+
+st.latex(r"\begin{pmatrix}a&b\\c&d\end{pmatrix}") # Use this to create mathematical expressions
+
+st.write("This is a text block using write.")
+
+# Here's how we add tables to streamlit:
+table = pd.DataFrame({
+    "Name": ['John','Bill','Anna','Mark','Kevin','Samantha','Carl'],
+    "Salary (k)": [60,92,81,48,23,104,75],
+    "Age": [29,68,34,91,18,47,38],
+    "College": [True,False,True,True,False,True,False]
+})
+st.metric(label='Upload Speed', value='120gb/s', delta='-1.4gb/s')
+table.set_index('Name',inplace=True)
+st.subheader("Table of Values")
+st.table(table)
+st.text("") # Just making space.
+st.subheader("DataFrame of Values")
+# Here's how we add data frames ro streamlit:
+st.dataframe(table)
+st.caption("This is much better than a simple table.")
+
+st.text('')
+
+# This is how we upload images:
+image = Image.open('../Streamlit_Tutorial/cat.jpg')
+st.image(image, caption="This is a cat.", width=500)
+
+# # To embed a video:
+# st.video('video.mp4')
+# # To embed audio:
+# st.audio('audio.mp3')
+
+# Check Boxes
+def change():
+    return st.session_state.checker
+
+check = st.checkbox('Google', value=False)
+
+if check:
+    st.markdown("*Give me an internship*")
+else:
+    pass
+
+# Radio Buttons
+radio = st.radio(label='In which country do you live?', options=('USA','UK',"CANADA"))
+
+if radio == 'USA'.upper():
+    st.write("Me too!")
+else:
+    st.write("I've never been there.")
+
+# Std Buttons:
+btn = st.button("Click Me!",on_click=None)
+
+if btn:
+    st.text("Here is a cat.")
+    st.image(image)
+
+# Drop Down:
+def chg_drop(selected_option):
+    return selected_option
+
+
+selection = st.selectbox(label='Stock 1',options=['Google','Amazon','Apple','JP Morgan','Nvidia','Bitcoin','Ethereum'])
+chg_drop(selection)
+
+# Here's how we can upload files:
+st.title("Uploading File")
+st.markdown("---")
+img = st.file_uploader(label='Please upload your data',type=['csv','xlsx'])
+if img is not None:
+    st.dataframe(img)
+
+# Here's how we can upload multiple images
+st.text('')
+st.title("Uploading Mult Files")
+st.markdown("---")
+imgs = st.file_uploader(label='Please upload your data',type=['csv','xlsx'], accept_multiple_files=True)
+if imgs is not None:
+    for i in imgs:
+        st.markdown(f"**{i.name}**")
+        st.dataframe(i)
+
+# Sliders:
+value = st.slider(label='This is a Slider', min_value=1,max_value=100)
+if value > 50:
+    st.write("That's a big number.")
+else:
+    st.write("That's a small number.")
+
+# # Text Input:
+# val = st.text_input(label='Enter a number.')
+# st.write(f"Your number squared is {int(val) ** 2}")
+
+val2 = st.text_area("Please say something:")
+
+# Here's how we get date input from the user:
+date = st.date_input("Please enter start date:")
+time1 = st.time_input("Please enter start time:")
+st.text("")
+st.text("")
+
+# Progress Bar:
+# st.caption("**Here is your progress**")
+# bar = st.progress(0)
+# for i in range(10):
+#     bar.progress((i+1)*10)
+#     time.sleep(1)
+
+# Forms:
+st.markdown("<h2>User Registration</h2>", unsafe_allow_html=True)
+form = st.form("Form 1")
+name = form.text_input(label='First Name')
+age = form.text_input(label='Age')
+form.form_submit_button(label='Submit')
+
+# Sidebar:
+# st.sidebar.write("Hello this is my sidebar.")
+
+# Charts:
+# --------------------------
+# Let's set our x-axis for the line graph
+x = np.linspace(0,10,100)
+# Let's also set our values for our bar chart
+bar_x = np.array(['a','b','c','d','e'])
+bar_y = np.array([13,9,19,14,10])
+
+# Before we put it on our app, lets customize it a little
+# Lets add some stuff to the sidebar for our graphs
+opt = st.sidebar.radio("Select Any Graph",options=('Line','Bar','HBar'))
+
+# The depending on the choice:
+
+if opt == 'Line':
+    st.write("**LINE GRAPH**")
+    # We create the figure
+    fig = plt.figure()
+    # Then lets style the graph
+    plt.style.use('https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle')
+    # Then we can plot our axes on our line graph
+    plt.plot(x, np.tan(x), 'b--')
+    plt.plot(x, np.sin(x), 'r--')
+    # Then we need to draw the figure on streamlit
+    st.write(fig)
+elif opt == 'Bar':
+    st.write("**BAR GRAPH**")
+    # We create the figure
+    fig = plt.figure()
+    # Then lets style the graph
+    plt.style.use('https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle')
+    # Then we can plot our axes on our bar chart
+    plt.bar(bar_x, bar_y)
+    # Then we need to draw the figure on streamlit
+    st.write(fig)
+elif opt == 'HBar':
+    st.write("**HORIZONTAL BAR GRAPH**")
+    # We create the figure
+    fig = plt.figure()
+    # Then lets style the graph
+    plt.style.use('https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle')
+    # Then we can plot our axes on our bar chart
+    plt.barh(bar_x, bar_y*10)
+    st.write(fig)
+
+
+
+

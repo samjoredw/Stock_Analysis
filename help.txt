@@ -1,0 +1,283 @@
+# ------------------------------------------------------------------
+#                         NUMPY TUTORIAL
+# Uses the numpy library to work with arrays im different dimensions
+# ------------------------------------------------------------------
+# import matplotlib.pyplot as plt
+# from matplotlib.animation import FuncAnimation
+
+import numpy as np
+
+# a[from:to:jump]
+
+# ------------------------------------------------------------------
+#                         BASICS OF ARRAYS
+# ------------------------------------------------------------------
+a_mul = np.array([[1, 2, 3],
+                  [4, 5, 6],
+                  [7, 8, 9]])
+
+# prints the second row of the array
+print(a_mul[1])
+# prints the first element of the third row of the list
+print(a_mul[2, 0])
+# prints the first and second element of the first row of the list
+print(a_mul[0, :2])
+# pints the entire third row of the list
+print(a_mul[2])
+# prints the first column of the list
+print(a_mul[:3, 0])
+# this uses all possible parameters
+print(a_mul[0:2:1,0::2])
+# prints the last element of the second row of the list
+print(a_mul[1, -1])
+# prints the entire list
+print(a_mul[:])
+# print the dimension shape of the list
+print(a_mul.shape)
+print()
+
+# ------------------------------------------------------------------
+#                    MULTIDIMENSIONAL ARRAYS
+# ------------------------------------------------------------------
+# note that when working with 3D arrays, the dimensions go z, y, x
+b_mul = np.array([[[1, 2, 3],
+                   [4, 5, 6],
+                   [7, 8, 9]],
+
+                  [[9, 8, 7],
+                   [6, 5, 4],
+                   [3, 2, 1]],
+
+                  [['a', 'b', 'c'],
+                   ['e', 'f', 'g'],
+                   ['x', 'y', 'z']]
+                  ])
+
+# prints the number of dimensions
+print(b_mul.ndim)
+# prints the first element of the second row of the third layer
+print(b_mul[2, 1, 0])
+# prints the last two elements of the third row of the second layer
+print(b_mul[1, 2, -2:])
+print()
+
+# ------------------------------------------------------------------
+#                          DATATYPES
+# ------------------------------------------------------------------
+
+# this will help us understand data type
+c_mul = np.array([[1,2,3],
+                [4,"5",6],
+                [7,8,9]])
+# print the data type
+print(c_mul.dtype)
+# print the data type of specific element
+print(type(c_mul[0][0])) # type int
+print(type(c_mul[1][1])) # type str
+# we can also call it like this
+print(c_mul[0][0].dtype)
+# let's change the data type
+c_mul = np.array([[1,2,3],
+                [4,"5",6],
+                [7,8,9]], dtype=np.float32)
+# now it will cast the data to the specified type
+print(c_mul.dtype)
+# and we can check for a specific element
+print(c_mul[1][1].dtype)
+# and when we print it, it should be a float
+print(c_mul[1,1])
+# we can then change the datatype of the array outside the array
+c_mul = c_mul.astype(np.int64)
+print(c_mul.dtype)
+print()
+
+# ------------------------------------------------------------------
+#                         DEFAULT ARRAYS
+# ------------------------------------------------------------------
+# numpy provides us with a couple of functions to prefill arrays
+
+# this will create an array of size (2,3,3) and fill it with fives
+a = np.full((2,3,3), 5)
+print(a)
+# this will fill the array with zeros specifically
+a = np.zeros((2,3,3))
+print(a)
+# the same thing can be done with ones
+a = np.ones((2,3,3))
+print(a)
+# this will create an empty array
+a = np.empty((2,3,3))
+print(a)
+# this will generate a sequence
+x_values = np.arange(0, 50, 2)
+print(x_values)
+# similar to arange() but we specify the number of values added
+y_values = np.linspace(0, 20, 20)
+print(y_values)
+print()
+
+# ------------------------------------------------------------------
+#                         NAN & INF
+# ------------------------------------------------------------------
+
+# use on an array where some elements of an array are missing
+print(np.nan)
+# use when you get a division by zero
+print(np.inf)
+# to check for these values you can do the following
+print(np.isnan(np.nan))
+print(np.isinf(np.inf))
+print()
+
+# ------------------------------------------------------------------
+#                          COMPUTATION
+# ------------------------------------------------------------------
+l1 = [1,2,3,4,5]
+l2 = [6,7,8,9,0]
+
+a1 = np.array(l1)
+a2 = np.array(l2)
+# for a normal array this would simply print the list 5 times
+print(l1 * 5)
+# but with a np array it instead multiplies each element with 5
+print(a1 * 5)
+# additionally, np allows you to do the following
+print(a1 + 5)
+# and
+print(a1 - 5)
+# likewise with concatenation of using a normal list
+print(l1 + l2)
+# np instead give you vector addition
+print(a1 + a2)
+# np also lets you subtract, multiply and divide elements
+print(a1 - a2)
+print(a1 * a2)
+# if we do the following
+a1 = np.array([1,2,3])
+a2 = np.array([[1],[2]])
+# this will result in a 2 X 3 matrix (given the two arrays are compatible)
+print(a1 + a2)
+print()
+
+# ------------------------------------------------------------------
+#                     MATHEMATICAL FUNCTIONS
+# ------------------------------------------------------------------
+a = np.array([[1,4,9],
+              [16,25,36]])
+# we can use functions to change individual elements of the array
+print(np.sqrt(a))
+# the same can be done with trig functions
+print(np.sin(a))
+print(np.cos(a))
+print(np.tan(a))
+# as well as logs and exponents
+print(np.log(a))
+print(np.log2(a))
+print(np.exp(a))
+print()
+
+# ------------------------------------------------------------------
+#                         ARRAY FUNCTIONS
+# ------------------------------------------------------------------
+d = np.array([1,2,3])
+# we can append to the array
+d = np.append(d, [7,8,9])
+print(d)
+# we can also insert into an array
+d = np.insert(d, 3, [4,5,6])
+print(d)
+# to delete, it's not that simple
+e = np.array([[1,2,3],
+              [4,5,6]])
+# this will delete index 1
+print(np.delete(e, 1))
+# but this will delete wrt a specific axis removing the entire row
+# this deletes the second row
+print(np.delete(e,1,1))
+# but this will delete wrt a specific axis as the column
+# this deletes the third column
+print(np.delete(e,2,1))
+print()
+# ------------------------------------------------------------------
+#                         ARRAY STRUCTURE
+# ------------------------------------------------------------------
+# splitting and joining arrays
+arr1 = np.arange(1,11)
+arr1.resize(2,5)
+arr2 = np.arange(11,21)
+arr2.resize(2,5)
+
+# concat
+a = np.concatenate((arr1,arr2),axis=0)
+
+arr1 = np.arange(1,11)
+arr1.resize(2,5)
+arr2 = np.arange(11,21)
+arr2.resize(2,5)
+# stack
+a = np.stack((arr1,arr2))
+
+arr1 = np.arange(1,11)
+arr1.resize(2,5)
+arr2 = np.arange(11,21)
+arr2.resize(2,5)
+a = np.concatenate((arr1,arr2),axis=0)
+# split
+print(np.split(arr1, 1, 1))
+print()
+
+# ------------------------------------------------------------------
+#                         RANDOM VALUES
+# ------------------------------------------------------------------
+
+# to get a random number you can do the following
+# number = np.random.randint()
+# we can specify a range of 1 to 100 like this
+number2 = np.random.randint(100)
+# we can do this a certain dimension
+numbers = np.random.randint(100, size=(3,3,3))
+print(numbers)
+# we can specify a min and max like this
+numbers = np.random.randint(20,30,size=(2,3,3))
+print(numbers)
+# we can also specify a distribution
+# here we are specifying 10 tries, a probability of 1/2 and
+# using a matrix of size 4 by 4
+numbers2 = np.random.binomial(10, p=0.5, size=(4,4))
+print(numbers2)
+# ^ this is kind of like making an array of set of coin flips where
+# each element is the number of times that there was heads
+# where each of the ten results per element is a boolean, and then averaged
+print()
+
+# ------------------------------------------------------------------
+#                         IMPORTING FILES
+# ------------------------------------------------------------------
+a1 = np.arange(1,10)
+a1.resize(3,3)
+
+
+# ------------------------------------------------------------------
+#                       GRAPHS WITH STREAMLIT
+# ------------------------------------------------------------------
+# we can save an array to a file by doing the following
+np.save("array.npy", a1)
+# then if we want to load in an array from a file we can do this
+a2 = np.load("array.npy")
+# we can also save to a cvs file
+# we also use a delimiter to separate the values by a key (,)
+np.savetxt("array.csv",a1, delimiter=",")
+# and then we can then load it back into python
+a3 = np.loadtxt("array.csv", delimiter=",")
+
+ st.write("**LINE GRAPH**")
+    # We create the figure
+    fig = plt.figure()
+    # Then lets style the graph
+    plt.style.use('https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle')
+    # Then we can plot our axes on our line graph
+    plt.plot(x, np.tan(x), 'b--')
+    plt.plot(x, np.sin(x), 'r--')
+    # Then we need to draw the figure on streamlit
+    st.write(fig)
+
