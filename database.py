@@ -2,7 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
+import graph
 import features
 import stock_dictionary
 
@@ -86,34 +86,7 @@ def run():
         subset_stock1, subset_stock2 = \
             (features_instance1.comparison(stock_name1, stock_name2, metric1, metric2, date_start, date_end))
 
-        dates1 = np.array(subset_stock1.index.date)
-        dates2 = np.array(subset_stock2.index.date)
-        data1 = np.array(subset_stock1.values)
-        data2 = np.array(subset_stock2.values)
-
-        if len(dates1) >= len(dates2):
-            use_dates = dates1
-        else:
-            use_dates = dates2
-
-        fig1, ax = plt.subplots()
-
-        plt.title(f"{stock_name1}: {metric1.upper()} vs. {stock_name2}: {metric2.upper()}")
-        plt.ylabel("Price ($)")
-        if metric1 == 'Volume':
-            plt.ylabel("Trades (100 Million)")
-        plt.xlabel("Date")
-
-        # Use actual date arrays for x-axis values
-        ax.plot(dates1, data1, 'b-', label=stock_name1)
-        ax.plot(dates2, data2, 'r-', label=stock_name2)
-
-        # Set ticks based on the length of the chosen date array
-        ticks = int(len(use_dates) / 12)
-        ax.set_xticks(use_dates[::ticks])
-        ax.set_xticklabels(use_dates[::ticks], rotation=75)
-
-        ax.legend()
+        fig1 = graph.graph_stocks(subset_stock1, subset_stock2, stock_name1, stock_name2)
 
         with st.expander('Graph View'):
             st.pyplot(fig1)

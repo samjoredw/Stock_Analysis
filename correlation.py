@@ -82,8 +82,10 @@ def run():
             selection1 = indv_stocks[selection1]
             selection2 = stocks.get_stock(selection2)
 
-            corr_value = features_instance2.correlation(selection1, selection2, metric1, metric2, start, end)
-            corr_instance = features_instance2.find_corr_instance(selection1, selection2, metric1, metric2, start, end)
+            corr_value, selection1, selection2 = (
+                features_instance2.correlation(selection1, selection2, metric1, metric2, start, end))
+
+
 
 
 

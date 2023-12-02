@@ -205,3 +205,42 @@ elif opt == 'HBar':
 
 
 
+rolling_correlation = df['StockA'].rolling(window=window_size).corr(df['StockB'])
+max_correlation_index = rolling_correlation.idxmax()
+
+t1_most_correlated = max_rolling_index - pd.DateOffset(days=window_size - 1)
+t2_most_correlated = max_rolling_index
+
+# Selecting the columns explicitly to create DataFrames
+sub_1_most_correlated = dat1.loc[(dat1.index >= t1_most_correlated) & (dat1.index <= t2_most_correlated), [date_column, met1]].copy()
+sub_2_most_correlated = dat2.loc[(dat2.index >= t1_most_correlated) & (dat2.index <= t2_most_correlated), [date_column, met2]].copy(
+
+
+        dates1 = np.array(subset_stock1.index.date)
+        dates2 = np.array(subset_stock2.index.date)
+        data1 = np.array(subset_stock1.values)
+        data2 = np.array(subset_stock2.values)
+
+        if len(dates1) >= len(dates2):
+            use_dates = dates1
+        else:
+            use_dates = dates2
+
+        fig1, ax = plt.subplots()
+
+        plt.title(f"{stock_name1}: {metric1.upper()} vs. {stock_name2}: {metric2.upper()}")
+        plt.ylabel("Price ($)")
+        if metric1 == 'Volume':
+            plt.ylabel("Trades (100 Million)")
+        plt.xlabel("Date")
+
+        # Use actual date arrays for x-axis values
+        ax.plot(dates1, data1, 'b-', label=stock_name1)
+        ax.plot(dates2, data2, 'r-', label=stock_name2)
+
+        # Set ticks based on the length of the chosen date array
+        ticks = int(len(use_dates) / 15)
+        ax.set_xticks(use_dates[::ticks])
+        ax.set_xticklabels(use_dates[::ticks], rotation=75)
+
+        ax.legend()

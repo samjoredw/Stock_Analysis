@@ -39,8 +39,13 @@ class Features:
 
         return sub_1, sub_2
 
+    # IMPORTANT:
+    # This CANNOT call comparison function even though it has similar code.
+    # This would result in each stock being indexed inside the built-in db.
     def correlation(self, dat1, dat2, met1, met2, t1, t2):
 
+        # Finding the correlation metric
+        # ------------------------------------------------------------------------
         column_to_find = 'Date'
         column_names = dat1.columns
 
@@ -62,18 +67,30 @@ class Features:
         sub_1 = sub_1[sub_1.index <= pd.to_datetime(t2)]
         sub_2 = sub_2[sub_2.index <= pd.to_datetime(t2)]
 
+        sub_1 = sub_1.reset_index()
+        sub_2 = sub_2.reset_index()
+
+        sub_1 = sub_1[['Date', met1]]
+        sub_2 = sub_2[['Date', met2]]
+
         correlation = sub_1[met1].corr(sub_2[met2])
 
 
+        # Finding instance of closest correlation
+        # ------------------------------------------------------------------------
+        window_size = 30
 
-        return correlation
+        rolling = sub_1[met1].rolling(window=window_size).corr(sub_2[met2])
 
+        max_rolling = rolling.idxmax()
 
-    def find_corr_instance(self, dat1, dat2, met1, met2, t1, t2):
-        print("Hello")
+        t1 = max_rolling - pd.DateOffset(days=window_size - 1)
+        t2 = max_rolling
 
-        return dat1
+        sub_1 = sub_1.loc[(sub_1.index >= t1) & (sub_1.index <= t2)]
+        sub_2 = sub_2.loc[(sub_2.index >= t1) & (sub_2.index <= t2)]
 
+        return correlation, sub_1, sub_2
 
     # 2 company comparison of (O+H+L+C)/4
     def ohlc(self, df):
@@ -121,6 +138,9 @@ class Features:
 
         return top_ten_entries
 
+# ==================================================================================================
+# GETTER functions for streamlit output, not part of specific features of the dataframes
+# ==================================================================================================
 def get_average(subset_stock1, metric1):
 
     val = subset_stock1[metric1].sum()
