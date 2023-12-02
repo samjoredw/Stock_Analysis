@@ -11,33 +11,10 @@ features_instance2 = features.Features(stocks)
 
 def run():
     st.empty()
-    st.title("Correlations")
-    st.markdown("---")
+    st.subheader("Finding Correlations in Data")
 
-    with st.expander('Feature Details (click to expand/shrink)'):
-        st.write("**Select Stock Database 1980-2023**")
-
-        st.write("This page is used to demonstrate the functionality of my database.")
-        st.write("""
-        **How to use this database:**
-        - Enter two different stocks to compare with one another
-        - Enter a financial metric for each stock to compare upon
-        - Enter a start date and end date
-        - Depending on what you choose, a graph will be generated to visualize the data
-
-        If you only see one (or neither) of the two stocks on the graph, you likely need to adjust 
-        the date range as those companies weren't public yet.
-
-        Also, note that  a stocks volume is comparable only to another stocks volume as it is not a 
-        monetary metric like the others.
-
-        **Usage:**
-
-        The ability to assess stocks with one another is essential to finding correlations and
-        ultimately drafting a model for learning and predicting.
-
-        Play around with it and see its functionality! 💵 💶 💷 💴
-        """)
+    with st.expander('Feature Details (click me!)'):
+        st.write("THis is something different")
 
 
     use_personal = st.checkbox("Would you like to use your own stock? (requires file input)", value=False)
@@ -84,6 +61,23 @@ def run():
 
     if submit_button:
 
+        if not selection1 or not selection2:
+            st.write("Please select your stocks.")
+            exit(1)
+        if selection1 == selection2:
+            st.write("Please enter two different stocks.")
+            exit(1)
+        if start > end:
+            st.write("Please enter a valid date range.")
+            exit(1)
+        if ((metric1 == 'Volume' and metric2 != 'Volume') or
+                (metric1 != 'Volume' and metric2 == 'Volume')):
+            st.write("To use volume, please make sure both stocks have selected 'Volume' as their metric of choice.")
+            exit(1)
+
+        stock_name1 = selection1
+        stock_name2 = selection2
+
         if use_personal:
             selection1 = indv_stocks.get(selection1)
         else:
@@ -96,17 +90,29 @@ def run():
             corr1, selection1, selection2 = (
                 features_instance2.correlation(selection1, selection2, metric1, metric2, start, end))
 
-            fig1 = graph.graph_stocks(selection1, selection2, 'selection1', 'selection2')
+            fig1 = graph.graph_stocks(selection1, selection2, stock_name1, stock_name2)
 
             with st.expander("Graph View"):
                 st.pyplot(fig1)
 
             with st.expander("Relationship View"):
                 st.write(f"""
-                The correlation between these two stocks is {round(corr1, 3)}.
+                **Correlation Stats**
+                The graph above represents the **180 days** from {start} to {end} where the correlation between
+                {stock_name1} and {stock_name2} is strongest.
+                
+                The correlation between these two stocks is **{round(corr1, 3)}** on a scale from -1 
+                (opposing, negative correlation) and 1 (similar, positive correlation).
 
-                This means that these two stocks have a {round(corr1 * 100)}% relationship with one
+                This means that these two stocks have around a **{round(corr1 * 100)}%** relationship with one
                 another within your date range above. Which is {describe(corr1)[0]}.
+                
+                **Make Some Changes**
+                Play around with the date ranges above to see if this number changes. To find the most correlated
+                180 days between these two stocks, put the start date at 1980 and the end date at 2023.
+                
+                Switch up the stocks and see if you can find the highest correlation between any two metrics and
+                any two dates! (Hint: the scale correlation is 0.977) 🤔🤔🧐🧐
                 """)
 
         else:
@@ -132,7 +138,7 @@ def describe(correlation):
     elif correlation < .9:
         descriptor = 'very high. These two stocks could be used to make predictions upon one another'
     else:
-        descriptor = 'extremely high. Are these the same stock?! If not, you might be on to something..'
+        descriptor = 'extremely high. You might be on to something with these two stocks...'
 
     return descriptor, descriptor
 

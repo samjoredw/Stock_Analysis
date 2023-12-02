@@ -14,7 +14,7 @@ def run():
     st.empty()
     st.subheader("Database Structure & Presentation")
 
-    with st.expander('Feature Details (click to expand/shrink)'):
+    with st.expander('Feature Details (click me!)'):
 
         st.write("**Select Stock Database 1980-2023**")
 
@@ -86,36 +86,7 @@ def run():
         subset_stock1, subset_stock2 = \
             (features_instance1.comparison(stock_name1, stock_name2, metric1, metric2, date_start, date_end))
 
-        dates1 = np.array(subset_stock1.index.date)
-        dates2 = np.array(subset_stock2.index.date)
-        data1 = np.array(subset_stock1.values)
-        data2 = np.array(subset_stock2.values)
-
-        if len(dates1) >= len(dates2):
-            use_dates = dates1
-        else:
-            use_dates = dates2
-
-        fig1, ax = plt.subplots()
-
-        plt.title(f"{stock_name1}: {metric1.upper()} vs. {stock_name2}: {metric2.upper()}")
-        plt.ylabel("Price ($)")
-        if metric1 == 'Volume':
-            plt.ylabel("Trades (100 Million)")
-        plt.xlabel("Date")
-
-        # Use actual date arrays for x-axis values
-        ax.plot(dates1, data1, 'b-', label=stock_name1)
-        ax.plot(dates2, data2, 'r-', label=stock_name2)
-
-        # Set ticks based on the length of the chosen date array
-        ticks = int(len(use_dates) / 15)
-        ax.set_xticks(use_dates[::ticks])
-        ax.set_xticklabels(use_dates[::ticks], rotation=75)
-
-        ax.legend()
-
-        # fig1 = graph.graph_stocks(subset_stock1, subset_stock2, stock_name1, stock_name2)
+        fig1 = graph.graph_stocks(subset_stock1, subset_stock2, stock_name1, stock_name2)
 
         with st.expander('Graph View'):
             st.pyplot(fig1)
@@ -136,22 +107,34 @@ def run():
             max_1 = "{:,}".format(max_1)
             max_2 = "{:,}".format(max_2)
 
+            st.write(f"""
+            **Measurement Stats**
+            
+            The graph above represents two different stocks between the range of {new_start_date} and {new_end_date}.
+            
+            """)
+
             if metric1 == "Volume":
                 st.write(f"The average number of trades for "
-                         f"{stock_name1} from {new_start_date} to {new_end_date} was {avg_1}"
+                         f"{stock_name1} from {new_start_date} to {new_end_date} was **{avg_1}**"
                          f" going as high as {max_1}")
                 st.write(f"The average number of trades for "
-                         f"{stock_name2} from {new_start_date} to {new_end_date} was {avg_2}"
+                         f"{stock_name2} from {new_start_date} to {new_end_date} was **{avg_2}**"
                          f" going as high as {max_2}")
             else:
                 st.write(f"The average {metric1.lower()} stock price for "
-                         f"{stock_name1} from {new_start_date} to {new_end_date} was {avg_1} dollars"
+                         f"{stock_name1} from {new_start_date} to {new_end_date} was **{avg_1}** dollars"
                          f" going as high as {max_1} dollars")
                 st.write(f"The average {metric2.lower()} stock price for "
-                         f"{stock_name2} from {new_start_date} to {new_end_date} was {avg_2} dollars"
+                         f"{stock_name2} from {new_start_date} to {new_end_date} was **{avg_2}** dollars"
                          f" going as high as {max_2} dollars")
 
+            st.write("""
+            But theres a lot more we can do with this stock information now that we know how to 
+            navigate the database! Take a look at the 'Correlations' tab to get some insights on our
+            data and to add some data of your own. 🔥🔥🔥
+            """)
         # Print the results
-        print(f"Subset of {stock_name1} data for {metric1}:\n{subset_stock1}")
-        print("\n")
-        print(f"Subset of {stock_name2} data for {metric2}:\n{subset_stock2}")
+        # print(f"Subset of {stock_name1} data for {metric1}:\n{subset_stock1}")
+        # print("\n")
+        # print(f"Subset of {stock_name2} data for {metric2}:\n{subset_stock2}")
