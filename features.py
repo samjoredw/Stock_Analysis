@@ -3,6 +3,9 @@
 # =============================================================================
 import pandas as pd
 from stock_dictionary import StockDictionary
+from stock_instance import Stock
+import streamlit as st
+import numpy as np
 
 class Features:
 
@@ -43,49 +46,48 @@ class Features:
     # This CANNOT call comparison function even though it has similar code.
     # This would result in each stock being indexed inside the built-in db.
     def correlation(self, dat1, dat2, met1, met2, t1, t2):
+        # Data cleaning for input file:
+        # ------------------------------------------------------------------------
+        if isinstance(dat1, Stock):
+            dat1 = Stock.get_data_frame(dat1)
+
+        dat2 = Stock.get_data_frame(dat2)
+
+        dat1 = dat1[[met1]]
+        dat2 = dat2[[met2]]
+
+        dat1.replace('null', np.nan, inplace=True)
+        dat2.replace('null', np.nan, inplace=True)
+
+        dat1.fillna(dat1.mean(), inplace=True)
+        dat2.fillna(dat2.mean(), inplace=True)
 
         # Finding the correlation metric
         # ------------------------------------------------------------------------
-        column_to_find = 'Date'
-        column_names = dat1.columns
-
-        date_column = next((col for col in column_names
-                            if col.lower() == column_to_find.lower()), None)
-
-        if date_column is None:
-            return 0
-
-        dat1.set_index(date_column, inplace=True)
-        dat2.set_index('Date', inplace=True)
-
-        dat1 = dat1[[date_column, met1]]
-        dat2 = dat2[['Date', met2]]
-
         # Setting date range
         sub_1 = dat1[dat1.index >= pd.to_datetime(t1)]
         sub_2 = dat2[dat2.index >= pd.to_datetime(t1)]
+
         sub_1 = sub_1[sub_1.index <= pd.to_datetime(t2)]
         sub_2 = sub_2[sub_2.index <= pd.to_datetime(t2)]
 
-        sub_1 = sub_1.reset_index()
-        sub_2 = sub_2.reset_index()
-
-        sub_1 = sub_1[['Date', met1]]
-        sub_2 = sub_2[['Date', met2]]
-
         correlation = sub_1[met1].corr(sub_2[met2])
-
 
         # Finding instance of closest correlation
         # ------------------------------------------------------------------------
-        window_size = 30
+        # Original location of the following block
+        window_size = 180
 
         rolling = sub_1[met1].rolling(window=window_size).corr(sub_2[met2])
 
-        max_rolling = rolling.idxmax()
+        if not rolling.empty:
+            max_rolling = rolling.idxmax()
 
-        t1 = max_rolling - pd.DateOffset(days=window_size - 1)
-        t2 = max_rolling
+            t1 = max_rolling - pd.DateOffset(days=window_size - 1)
+            t2 = max_rolling
+        else:
+            st.write("The rolling object is empty. Unable to calculate correlation.")
+            exit(1)
 
         sub_1 = sub_1.loc[(sub_1.index >= t1) & (sub_1.index <= t2)]
         sub_2 = sub_2.loc[(sub_2.index >= t1) & (sub_2.index <= t2)]

@@ -19,4 +19,7 @@ class Stock:
 
     def get_data_frame(self):
 
+        if self.df is None:
+            self.df = pd.read_csv(self.path)
+
         return self.df
