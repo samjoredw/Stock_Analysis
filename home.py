@@ -18,6 +18,9 @@ hide_menu_style = """
         """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
 
+st.set_page_config(page_title="Stock Database", page_icon="📊")
+
+
 home = "🏠 Home"
 data = "📈 Database"
 cor = "🔍 Correlations"
