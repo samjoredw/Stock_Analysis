@@ -48,22 +48,16 @@ my project.
 """)
 
 if menu_radio == data:
-    st.empty()
     database.run()
 if menu_radio == cor:
-    st.empty()
     correlation.run()
 if menu_radio == learn:
-    st.empty()
     model.run()
 if menu_radio == predict:
-    st.empty()
     prediction.run()
 if menu_radio == conclude:
-    st.empty()
     conclusion.run()
 if menu_radio == home:
-    st.empty()
     st.write("# 📈 Stock Data Analysis 📉")
     st.write("BY: SAM EDWARDS")
     st.subheader("Pricing Databases and Machine Learning")
@@ -169,4 +163,6 @@ accuracy of my predictive machine-learning model on trends in the market (using 
         - streamlit
         
         """)
+
+st.empty()
 

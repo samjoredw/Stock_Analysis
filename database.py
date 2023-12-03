@@ -11,10 +11,17 @@ stocks = stock_dictionary.StockDictionary().stocks
 features_instance1 = features.Features(stocks)
 
 def run():
+
     st.empty()
     st.subheader("Database Structure & Presentation")
 
+<<<<<<< HEAD
     with st.expander('Feature Details (click me!)'):
+=======
+    expand = st.expander('Feature Details (database)')
+
+    with expand:
+>>>>>>> a71ac4b (Changes)
 
         st.write("**Select Stock Database 1980-2023**")
 

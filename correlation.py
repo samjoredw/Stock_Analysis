@@ -10,10 +10,17 @@ stocks = stock_dictionary.StockDictionary().stocks
 features_instance2 = features.Features(stocks)
 
 def run():
+
     st.empty()
     st.subheader("Finding Correlations in Data")
 
+<<<<<<< HEAD
     with st.expander('Feature Details (click me!)'):
+=======
+    expand1 = st.expander('Feature Details (correlations)')
+
+    with expand1:
+>>>>>>> a71ac4b (Changes)
         st.write("THis is something different")
 
 
