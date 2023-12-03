@@ -9,7 +9,7 @@ import model
 import prediction
 import conclusion
 
-st.set_page_config(page_title="Stock Database", page_icon="📊")
+st.set_page_config(page_title="Stock Database Project - Sam Edwards", page_icon="📊")
 
 st.empty()
 hide_menu_style = """
