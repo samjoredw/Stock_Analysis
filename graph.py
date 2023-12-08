@@ -1,12 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import streamlit as st
+
 
 # BEFORE USING THIS:
 # Ensure that subset stocks have been converted to dataframes of
 # either size 1 (index, value) or that the required value column has been
 # assigned to index[1] beforehand.
 def graph_stocks(subset_stock1, subset_stock2, name1, name2):
-
     metric1 = subset_stock1.columns[0]
     metric2 = subset_stock2.columns[0]
 
@@ -35,10 +36,15 @@ def graph_stocks(subset_stock1, subset_stock2, name1, name2):
 
     # Set ticks based on the length of the chosen date array
     ticks = int(len(use_dates) / 15)
-    ax.set_xticks(use_dates[::ticks])
+
+    try:
+        ax.set_xticks(use_dates[::ticks])
+    except:
+        st.write("Please make sure you are uploading a valid stock csv."
+                 "\nEnsure that it has the necessary metrics above and that it has **daily** records!")
+        return 0
     ax.set_xticklabels(use_dates[::ticks], rotation=75)
 
     ax.legend()
 
     return fig
-

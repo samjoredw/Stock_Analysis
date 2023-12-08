@@ -4,6 +4,7 @@ import graph
 import stock_dictionary
 import stock_instance
 import os
+from datetime import datetime
 
 # Sets the dictionary and dataframes
 stocks = stock_dictionary.StockDictionary().stocks
@@ -12,15 +13,34 @@ features_instance2 = features.Features(stocks)
 def run():
 
     st.empty()
-    st.subheader("Finding Correlations in Data")
-
-    expand1 = st.expander('Feature Details (correlations)')
+    expand1 = st.expander('How to use this database')
 
     with expand1:
-        st.write("THis is something different")
+        st.markdown("""
+    **Searching the Database**
+    
+    - Pick two stocks from the drop-down menus
+    - Pick two metrics to compare your stocks upon ('Volume' must be with 'Volume')
+    - Pick two dates: The start date and end date that you would like to search for a 
+    correlation in.
+    - Submit and check your results
+    
+    **Submitting a File**
+    
+    - [Go to Yahoo Finance](https://finance.yahoo.com)
+    - Search for a symbol at the top
+    - Go to 'Historical Data' tab under the stock name
+    - Select a time period (recommended: 'MAX')
+    - Select 'Daily Frequency'
+    - Hit 'Apply' and then 'Download'
+    - Come back here and check the box below
+    - Upload your file
+    - Select your stock in the dropdown menu
+    - Submit and check your results
+    """)
 
 
-    use_personal = st.checkbox("Would you like to use your own stock? (requires file input)", value=False)
+    use_personal = st.checkbox("Add your own stock (requires file input)", value=False)
 
     indv_stocks = {}
 
@@ -54,8 +74,8 @@ def run():
 
         col1.text("")
         col1.text("")
-        start = col1.slider(label="Begin Date", min_value=1980, max_value=2023, value=2022)
-        end = col3.slider(label="End Date", min_value=1980, max_value=2023, value=2023)
+        start = col1.slider(label="Begin Date", min_value=1995, max_value=2023, value=2020)
+        end = col3.slider(label="End Date", min_value=1995, max_value=2023, value=2023)
 
         start = f"{start}-01-01"
         end = f"{end + 1}-01-01"
@@ -94,23 +114,34 @@ def run():
                 features_instance2.correlation(selection1, selection2, metric1, metric2, start, end))
 
             fig1 = graph.graph_stocks(selection1, selection2, stock_name1, stock_name2)
+            if fig1 == 0:
+                st.write("See 'How to use this database' above.")
+                exit(1)
 
-            with st.expander("Graph View"):
+            pr_start = datetime.strptime(start, "%Y-%m-%d")
+            pr_start = pr_start.strftime("%Y")
+
+            pr_end = datetime.strptime(end, "%Y-%m-%d")
+            pr_end = pr_end.strftime("%Y")
+
+            with st.expander("Closest Correlation Over 180 Days | Graph"):
                 st.pyplot(fig1)
 
-            with st.expander("Relationship View"):
+            with st.expander("Relationship Analysis"):
                 st.write(f"""
                 **Correlation Stats**
-                The graph above represents the **180 days** from {start} to {end} where the correlation between
+                
+                The graph above represents the **180 days** from {pr_start} to {pr_end} where the correlation between
                 {stock_name1} and {stock_name2} is strongest.
                 
                 The correlation between these two stocks is **{round(corr1, 3)}** on a scale from -1 
                 (opposing, negative correlation) and 1 (similar, positive correlation).
 
                 This means that these two stocks have around a **{round(corr1 * 100)}%** relationship with one
-                another within your date range above. Which is {describe(corr1)[0]}.
+                another within your date range above. Which is {describe(corr1)[0]}
                 
                 **Make Some Changes**
+                
                 Play around with the date ranges above to see if this number changes. To find the most correlated
                 180 days between these two stocks, put the start date at 1980 and the end date at 2023.
                 
@@ -125,23 +156,21 @@ def run():
 def describe(correlation):
 
     if correlation < -.8:
-        descriptor = ('extremely low. They seem to be polarizing in there fluctuations. These stocks could be used to'
-                      'make contrasting predictions between one another')
-    elif correlation < -.5:
-        descriptor = 'very low. They tend to be compliments of one another.'
-    elif correlation < 0:
-        descriptor = 'low and means very little correlation if any at all'
-    elif correlation < .33:
-        descriptor = 'somewhat average. They do not correlate very much'
+        descriptor = 'extremely low.'
     elif correlation < .6:
-        descriptor = 'moderate. They have positively corresponding relationship with one another'
+        descriptor = 'very low.'
+    elif correlation < .7:
+        descriptor = 'low.'
     elif correlation < .8:
-        descriptor = ('high. They have very similar trends in their fluctuation. Definitely two stocks to keep '
-                      'an eye on')
+        descriptor = 'average.'
+    elif correlation < .85:
+        descriptor = 'moderate.'
     elif correlation < .9:
-        descriptor = 'very high. These two stocks could be used to make predictions upon one another'
+        descriptor = 'high.'
+    elif correlation < .95:
+        descriptor = 'very high.'
     else:
-        descriptor = 'extremely high. You might be on to something with these two stocks...'
+        descriptor = 'extremely high.'
 
     return descriptor, descriptor
 

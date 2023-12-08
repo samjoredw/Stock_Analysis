@@ -1,5 +1,8 @@
 # =============================================================================
 #                                 FEATURES
+#                              --------------
+#         Defines characteristics about a set of stocks and provides 
+#                  infmormation about their similarities.
 # =============================================================================
 import pandas as pd
 from stock_dictionary import StockDictionary
@@ -7,12 +10,23 @@ from stock_instance import Stock
 import streamlit as st
 import numpy as np
 
+# -----------------------------------------------------------------------------
+# This is where all the good stuff is. This class takes in a dictionary of
+# dataframes and performs several different modifications based on the input.
+# -----------------------------------------------------------------------------
 class Features:
 
+
+    # Initialization, taking in a dictionary of dfs
+    # -----------------------------------------------------
     def __init__(self, dictionary):
         self.db = dictionary
 
-    # Compares two general metrics to one another
+
+    # Compares two general metrics to one another of two 
+    # different dataframes. Then subsequently shrinking 
+    # the dataframes based off of date and the needed columns.
+    # -----------------------------------------------------
     def comparison(self, dat1, dat2, met1, met2, t1, t2):
 
         dat1 = self.db.get(dat1).get_data_frame()
@@ -42,12 +56,19 @@ class Features:
 
         return sub_1, sub_2
 
-    # IMPORTANT:
-    # This CANNOT call comparison function even though it has similar code.
-    # This would result in each stock being indexed inside the built-in db.
+
+    # Finds the correlation 'scale' of two different stocks
+    # and returns the scale number as well as two dataframes
+    # of the 180 days that were most closely correlated
+    # with one another based on the date range.
+    # NOTE:
+    # This CANNOT call comparison() function even though it 
+    # has similar code. This would result in each stock being 
+    # indexed inside the built-in db.
+    # -----------------------------------------------------
     def correlation(self, dat1, dat2, met1, met2, t1, t2):
+
         # Data cleaning for input file:
-        # ------------------------------------------------------------------------
         if isinstance(dat1, Stock):
             dat1 = Stock.get_data_frame(dat1)
 
@@ -63,7 +84,6 @@ class Features:
         dat2.fillna(dat2.mean(), inplace=True)
 
         # Finding the correlation metric
-        # ------------------------------------------------------------------------
         # Setting date range
         sub_1 = dat1[dat1.index >= pd.to_datetime(t1)]
         sub_2 = dat2[dat2.index >= pd.to_datetime(t1)]
@@ -74,7 +94,6 @@ class Features:
         correlation = sub_1[met1].corr(sub_2[met2])
 
         # Finding instance of closest correlation
-        # ------------------------------------------------------------------------
         # Original location of the following block
         window_size = 180
 
@@ -94,7 +113,11 @@ class Features:
 
         return correlation, sub_1, sub_2
 
+
     # 2 company comparison of (O+H+L+C)/4
+    # Takes the average and returns a new dataframe of one 
+    # column.
+    # -----------------------------------------------------
     def ohlc(self, df):
 
         ohlc = df[['Open', 'High', 'Low', 'Close']].iloc[1:].sum(axis=1) / 4
@@ -105,7 +128,12 @@ class Features:
 
         return new_df
 
+
     # 2 company comparison of (H-L)
+    # Takes the volitily of a single dataframe based off 
+    # of high and low then returns a new dataframe with the 
+    # newly created column.
+    # -----------------------------------------------------
     def volatility_compar(self, df):
 
         volatility = df['High'].subtract(df['Low']).iloc[1:]
@@ -117,32 +145,46 @@ class Features:
         return new_df
 
 
+    # Searches the imbedded dictionary for a dataframe based
+    # on a given input name.
+    # -----------------------------------------------------
     def search_stock(self, name):
 
-        stock_list = [key for key in self.db.keys() if key.lower().startswith(name.lower())]
+        stock_list = [
+            key
+            for key in self.db.keys()
+            if key.lower().startswith(name.lower())
+        ]
 
         return stock_list
 
 
+    # Returns the top ten highest entries of a dataframes
+    # 'Close' metric. Takes in no parameters so it must only
+    # be called with comparison()
+    # -----------------------------------------------------
     def search_highest(self):
 
-        # Assuming self.db is a dictionary of Stock objects where each Stock has a DataFrame
+        # Assuming self.db is a dictionary of Stock 
+        # objects where each Stock has a DataFrame
         # and the 'close' column starts with 'close'
         close_values = [
             (name, stock.df.filter(like='Close').iloc[-1].max()) for name, stock in self.db.items()
         ]
 
-        # Sort the list based on the 'close' values in descending order
+        # Sorts the list based on the 'close' values in descending order
         sorted_close_values = sorted(close_values, key=lambda x: x[1], reverse=True)
 
-        # Take the top ten entries from the sorted list
+        # Takes the top ten entries from the sorted list
         top_ten_entries = sorted_close_values[:10]
 
         return top_ten_entries
 
-# ==================================================================================================
-# GETTER functions for streamlit output, not part of specific features of the dataframes
-# ==================================================================================================
+
+# --------------------------------------------------------------------------------------
+# GETTER functions for streamlit output, not part of specific features of the
+# dataframes.
+# --------------------------------------------------------------------------------------
 def get_average(subset_stock1, metric1):
 
     val = subset_stock1[metric1].sum()
