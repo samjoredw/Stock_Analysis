@@ -2,11 +2,10 @@
 #                                 FEATURES
 #                              --------------
 #         Defines characteristics about a set of stocks and provides 
-#                  infmormation about their similarities.
+#                  information about their similarities.
 # =============================================================================
 import pandas as pd
-from stock_dictionary import StockDictionary
-from stock_instance import Stock
+from src.stock_instance import Stock
 import streamlit as st
 import numpy as np
 
@@ -15,7 +14,6 @@ import numpy as np
 # dataframes and performs several different modifications based on the input.
 # -----------------------------------------------------------------------------
 class Features:
-
 
     # Initialization, taking in a dictionary of dfs
     # -----------------------------------------------------
@@ -179,6 +177,7 @@ class Features:
         top_ten_entries = sorted_close_values[:10]
 
         return top_ten_entries
+
 
 
 # --------------------------------------------------------------------------------------

@@ -1,8 +1,15 @@
+# =============================================================================
+#                               CORRELATIONS
+#                            ------------------
+#         Serves to find correlations within the database by comparing
+#                  different metrics and using features.py
+# =============================================================================
+
 import streamlit as st
-import features
-import graph
-import stock_dictionary
-import stock_instance
+from src import features
+from src import graph
+from src import stock_dictionary
+from src import stock_instance
 import os
 from datetime import datetime
 
@@ -146,7 +153,7 @@ def run():
                 180 days between these two stocks, put the start date at 1980 and the end date at 2023.
                 
                 Switch up the stocks and see if you can find the highest correlation between any two metrics and
-                any two dates! (Hint: the scale correlation is 0.977) 🤔🤔🧐🧐
+                any two dates! (Hint: the scale correlation is 0.977)
                 """)
 
         else:

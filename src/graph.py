@@ -1,3 +1,9 @@
+# =============================================================================
+#                                   GRAPH
+#                                -----------
+#                    Serves to create a graph for the data.
+# =============================================================================
+
 import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st

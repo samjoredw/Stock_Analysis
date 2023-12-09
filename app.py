@@ -5,17 +5,13 @@
 # =============================================================================
 import streamlit as st
 # pages
-import database
-import correlation
-import model
-import prediction
-import conclusion
+from src import correlation, prediction
 
 # -----------------------------------------------------------------------------
 # This serves as the homepage of my project. It initializes a list of pages
 # that can be navigated though to see different elements of my project.
-# The home page also offers general information about my project and some 
-# recourses.
+# The home page shows how the database functions and some insights into
+# the data itself.
 # -----------------------------------------------------------------------------
 st.set_page_config(page_title="Stock Database Project - Sam Edwards", page_icon="📊")
 
@@ -27,10 +23,20 @@ hide_menu_style = """
         </style>
         """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
+st.markdown(
+    """
+    <style>
+        .sidebar .sidebar-content {
+            max-width: 5px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Page key identifiers:
-cor = "🔍 Correlations"
-predict = "🔮 Predictions"
+cor = "Correlations"
+predict = "Predictions"
 
 st.sidebar.write("# Navigation Bar")
 menu_radio = st.sidebar.radio(label="Main Menu",options=[cor,predict],key='menu')
@@ -49,8 +55,8 @@ if menu_radio == cor:
     st.subheader("Stock Database")
     st.write("""
     
-Hello! I developed this website to demonstrate the functionality of my built-in stock database and illustrate the 
-accuracy of my predictive machine-learning model on trends in the market (using my database of course).
+This website demonstrates the functionality of my built-in stock database and illustrates the 
+accuracy of my predictive machine-learning model on trends in the market.
 
 This database GUI helps you finds trends in the market between two different stocks. Choose a date range and the 
 database will show you the 180 day period with the highest correlation.

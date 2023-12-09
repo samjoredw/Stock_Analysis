@@ -1,6 +1,4 @@
 import streamlit as st
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import graph
 import features
@@ -135,13 +133,11 @@ def run():
             st.write("""
             But theres a lot more we can do with this stock information now that we know how to 
             navigate the database! Take a look at the 'Correlations' tab to get some insights on our
-            data and to add some data of your own. 🔥🔥🔥
+            data and to add some data of your own.
             """)
         
         with st.expander('Table View'):
             
             ncol1, ncol2 = st.columns(2)
-            # ncol1(f"Subset of {stock_name1} data for {metric1}:\n{
             ncol1.dataframe(subset_stock1)
-            # f"Subset of {stock_name2} data for {metric2}:\n{
             ncol2.dataframe(subset_stock2)
