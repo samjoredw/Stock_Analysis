@@ -40,14 +40,6 @@ predict = "Predictions"
 
 st.sidebar.write("# Navigation Bar")
 menu_radio = st.sidebar.radio(label="Main Menu",options=[cor,predict],key='menu')
-st.sidebar.write("""
-**For more info, please reach out**
-
-🧍🏻 Sam Edwards\n
-📬 se2584@columbia.edu\n
-📞 609.751.1524
-
-""")
 
 if menu_radio == predict:
     prediction.run()
