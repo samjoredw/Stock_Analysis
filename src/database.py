@@ -38,7 +38,7 @@ def run():
         The ability to assess stocks with one another is essential to finding correlations and
         ultimately drafting a model for learning and predicting.
         
-        Play around with it and see its functionality! 💵 💶 💷 💴
+        Play around with it and see its functionality!
         """)
 
     with st.form('Submit'):

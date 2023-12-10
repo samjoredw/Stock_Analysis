@@ -121,20 +121,22 @@ def run():
                 features_instance2.correlation(selection1, selection2, metric1, metric2, start, end))
 
             fig1 = graph.graph_stocks(selection1, selection2, stock_name1, stock_name2)
+
+
             if fig1 == 0:
                 st.write("See 'How to use this database' above.")
                 exit(1)
-
-            pr_start = datetime.strptime(start, "%Y-%m-%d")
-            pr_start = pr_start.strftime("%Y")
-
-            pr_end = datetime.strptime(end, "%Y-%m-%d")
-            pr_end = pr_end.strftime("%Y")
 
             with st.expander("Closest Correlation Over 180 Days | Graph"):
                 st.pyplot(fig1)
 
             with st.expander("Relationship Analysis"):
+                pr_start = datetime.strptime(start, "%Y-%m-%d")
+                pr_start = pr_start.strftime("%Y")
+
+                pr_end = datetime.strptime(end, "%Y-%m-%d")
+                pr_end = pr_end.strftime("%Y")
+
                 st.write(f"""
                 **Correlation Stats**
                 
@@ -142,7 +144,7 @@ def run():
                 {stock_name1} and {stock_name2} is strongest.
                 
                 The correlation between these two stocks is **{round(corr1, 3)}** on a scale from -1 
-                (opposing, negative correlation) and 1 (similar, positive correlation).
+                (opposing, negative correlation) to 1 (similar, positive correlation).
 
                 This means that these two stocks have around a **{round(corr1 * 100)}%** relationship with one
                 another within your date range above. Which is {describe(corr1)[0]}

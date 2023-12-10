@@ -4,8 +4,9 @@
 #      Serves as a main page demo for my project using streamlit and html.
 # =============================================================================
 import streamlit as st
+from PIL import Image
 # pages
-from src import correlation, prediction
+from src import correlation
 
 # -----------------------------------------------------------------------------
 # This serves as the homepage of my project. It initializes a list of pages
@@ -23,37 +24,20 @@ hide_menu_style = """
         </style>
         """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
-st.markdown(
-    """
-    <style>
-        .sidebar .sidebar-content {
-            max-width: 5px;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
 
-# Page key identifiers:
-cor = "Correlations"
-predict = "Predictions"
+banner = Image.open('./stck_database.jpg')
+st.image(banner, use_column_width=True)
 
-st.sidebar.write("# Navigation Bar")
-menu_radio = st.sidebar.radio(label="Main Menu",options=[cor,predict],key='menu')
+st.write("""
 
-if menu_radio == predict:
-    prediction.run()
-if menu_radio == cor:
-    st.subheader("Stock Database")
-    st.write("""
-    
-This website demonstrates the functionality of my built-in stock database and illustrates the 
-accuracy of my predictive machine-learning model on trends in the market.
+This website illustrates the functionality of my built-in stock database and demonstrates the 
+accuracy of my correlation algorithm.
 
 This database GUI helps you finds trends in the market between two different stocks. Choose a date range and the 
 database will show you the 180 day period with the highest correlation.
+
 """)
-    correlation.run()
+correlation.run()
 
 st.empty()
 
