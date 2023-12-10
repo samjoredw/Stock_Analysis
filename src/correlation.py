@@ -126,7 +126,7 @@ def run():
 
         if selection1 is not None and selection2 is not None:
 
-            corr1, selection1, selection2 = (
+            corr1, selection1, selection2, mselection1, mselection2 = (
                 features_instance2.correlation(selection1, selection2, metric1, metric2, start, end))
 
             fig1 = graph.graph_stocks(selection1, selection2, stock_name1, stock_name2)
@@ -139,7 +139,7 @@ def run():
             with st.expander("Closest Correlation Over 180 Days | Graph"):
                 st.pyplot(fig1)
 
-            with st.expander("Relationship Analysis"):
+            with ((st.expander("Relationship Analysis"))):
                 pr_start = datetime.strptime(start, "%Y-%m-%d")
                 pr_start = pr_start.strftime("%Y")
 
@@ -164,8 +164,12 @@ def run():
                 180 days between these two stocks, put the start date at 1995 and the end date at 2023.
                 
                 Switch up the stocks and see if you can find the highest correlation between any two metrics and
-                any two dates! (Hint: the scale correlation is 0.977)
+                any two dates! (Hint: the scale correlation is 0.986)
                 """)
+
+            with st.expander("Entire Date Range Prices | Graph"):
+                fig2 = graph.graph_stocks(mselection1, mselection2, stock_name1, stock_name2)
+                st.pyplot(fig2)
 
         else:
             st.write("Error: Unable to retrieve stock data. Please check your inputs.")

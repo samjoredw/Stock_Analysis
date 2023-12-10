@@ -14,6 +14,7 @@ import streamlit as st
 # either size 1 (index, value) or that the required value column has been
 # assigned to index[1] beforehand.
 def graph_stocks(subset_stock1, subset_stock2, name1, name2):
+
     metric1 = subset_stock1.columns[0]
     metric2 = subset_stock2.columns[0]
 

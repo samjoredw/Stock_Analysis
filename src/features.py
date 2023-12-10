@@ -26,7 +26,6 @@ class Features:
     # the dataframes based off of date and the needed columns.
     # -----------------------------------------------------
     def comparison(self, dat1, dat2, met1, met2, t1, t2):
-
         dat1 = self.db.get(dat1).get_data_frame()
         dat2 = self.db.get(dat2).get_data_frame()
 
@@ -89,6 +88,10 @@ class Features:
         sub_1 = sub_1[sub_1.index <= pd.to_datetime(t2)]
         sub_2 = sub_2[sub_2.index <= pd.to_datetime(t2)]
 
+        # Saving the two macro dfs
+        macro_1 = sub_1
+        macro_2 = sub_2
+
         correlation = sub_1[met1].corr(sub_2[met2])
 
         # Finding instance of closest correlation
@@ -109,7 +112,7 @@ class Features:
         sub_1 = sub_1.loc[(sub_1.index >= t1) & (sub_1.index <= t2)]
         sub_2 = sub_2.loc[(sub_2.index >= t1) & (sub_2.index <= t2)]
 
-        return correlation, sub_1, sub_2
+        return correlation, sub_1, sub_2, macro_1, macro_2
 
 
     # 2 company comparison of (O+H+L+C)/4
