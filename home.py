@@ -91,7 +91,7 @@ st.image(banner, use_column_width=True)
 
 st.write("""
     
-This website illustrates the functionality of my built-in stock database and demonstrates the 
+This website demonstrates the functionality of my built-in stock database and illustrates the 
 accuracy of my correlation algorithm.
 
 This database GUI helps you finds trends in the market between two different stocks. Choose a date range and the 
