@@ -17,6 +17,7 @@ from src import correlation
 st.set_page_config(page_title="Stock Database Project - Sam Edwards", page_icon="📊")
 
 st.empty()
+
 hide_menu_style = """
         <style>
         #MainMenu {visibility: hidden;}
@@ -33,6 +34,16 @@ st.markdown(
     </style>
     """,
     unsafe_allow_html=True,
+)
+st.markdown(
+    """
+    <style>
+        .viewerBadge_link__qRIco {
+            display: none !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
 )
 st.markdown(
     """
@@ -59,6 +70,16 @@ st.markdown(
     """
     <style>
         [data-testid="stActionButtonLabel"] {
+            display: none !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+st.markdown(
+    """
+    <style>
+        [data-testid="stHeader"] {
             display: none !important;
         }
     </style>

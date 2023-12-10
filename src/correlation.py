@@ -152,7 +152,7 @@ def run():
                 **Make Some Changes**
                 
                 Play around with the date ranges above to see if this number changes. To find the most correlated
-                180 days between these two stocks, put the start date at 1980 and the end date at 2023.
+                180 days between these two stocks, put the start date at 1995 and the end date at 2023.
                 
                 Switch up the stocks and see if you can find the highest correlation between any two metrics and
                 any two dates! (Hint: the scale correlation is 0.977)
