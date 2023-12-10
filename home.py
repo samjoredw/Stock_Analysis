@@ -24,12 +24,53 @@ hide_menu_style = """
         </style>
         """
 st.markdown(hide_menu_style, unsafe_allow_html=True)
+st.markdown(
+    """
+    <style>
+        .sidebar .sidebar-content {
+            max-width: 5px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
+    <style>
+        .viewerBadge_container__r5tak {
+            display: none !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+st.markdown(
+    """
+    <style>
+        [data-testid="stActionButtonIcon"] {
+            display: none !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <style>
+        [data-testid="stActionButtonLabel"] {
+            display: none !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 banner = Image.open('./stck_database.jpg')
 st.image(banner, use_column_width=True)
 
 st.write("""
-
+    
 This website illustrates the functionality of my built-in stock database and demonstrates the 
 accuracy of my correlation algorithm.
 
