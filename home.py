@@ -18,6 +18,30 @@ st.set_page_config(page_title="Stock Database Project - Sam Edwards", page_icon=
 
 st.empty()
 
+banner = Image.open('./stck_database.jpg')
+st.image(banner, use_column_width=True)
+
+st.write("""
+    
+This website demonstrates the functionality of my built-in stock database and illustrates the 
+accuracy of my correlation algorithm.
+
+This database GUI helps you finds trends in the market between two different stocks. Choose a date range and the 
+database will show you the 180 day period with the highest correlation.
+
+""")
+
+correlation.run()
+
+custom_css = """
+<style>
+    h1 {
+        margin-top: 0; /* Adjust this value as needed */
+    }
+</style>
+"""
+
+st.markdown(custom_css, unsafe_allow_html=True)
 hide_menu_style = """
         <style>
         #MainMenu {visibility: hidden;}
@@ -85,20 +109,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-banner = Image.open('./stck_database.jpg')
-st.image(banner, use_column_width=True)
-
-st.write("""
-    
-This website demonstrates the functionality of my built-in stock database and illustrates the 
-accuracy of my correlation algorithm.
-
-This database GUI helps you finds trends in the market between two different stocks. Choose a date range and the 
-database will show you the 180 day period with the highest correlation.
-
-""")
-correlation.run()
 
 st.empty()
 
