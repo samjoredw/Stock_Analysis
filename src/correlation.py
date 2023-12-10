@@ -36,7 +36,7 @@ def run():
     
     - [Go to Yahoo Finance](https://finance.yahoo.com)
     - Search for a symbol at the top
-    - Go to 'Historical Data' tab under the stock name
+    - Go to the 'Historical Data' tab under the stock name
     - Select a time period (recommended: 'MAX')
     - Select 'Daily Frequency'
     - Hit 'Apply' and then 'Download'
@@ -69,10 +69,12 @@ def run():
 
         if use_personal:
             selection1 = col1.selectbox(label='Your Stocks', options=indv_stocks.keys(), index=None, key='Selection 1')
+            spr = "Your Stock Metric"
         else:
             selection1 = col1.selectbox(label='First Stock', options=stocks.keys(), index=None, key='Selection 1')
+            spr = "Metric for First Stock"
 
-        metric1 = col2.radio(label=f"Your Stock's Metric",
+        metric1 = col2.radio(label=f"{spr}",
                              options=('High', 'Low', 'Open', 'Close', 'Adj Close', 'Volume'), key="metric1")
 
         selection2 = col1.selectbox(label='Second Stock', options=stocks.keys(), index=None, key='Selection 2')
