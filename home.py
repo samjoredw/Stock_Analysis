@@ -32,6 +32,11 @@ database will show you the 180 day period with the highest correlation.
 """)
 
 correlation.run()
+st.markdown('<div style="display: flex; justify-content: center;">'
+            '<a href="https://github.com/samjoredw/Stock_Analysis" target="_blank"> '
+            '<img src="https://github.com/favicon.ico" alt="GitHub" width="20"/> '
+            '</a>'
+            '</div>', unsafe_allow_html=True)
 
 custom_css = """
 <style>
