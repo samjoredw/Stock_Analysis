@@ -5,18 +5,25 @@
 #                  different metrics and using features.py
 # =============================================================================
 
+import os
 import streamlit as st
 from src import features
 from src import graph
 from src import stock_dictionary
 from src import stock_instance
-import os
 from datetime import datetime
 
 # Sets the dictionary and dataframes
 stocks = stock_dictionary.StockDictionary().stocks
 features_instance2 = features.Features(stocks)
 
+# -----------------------------------------------------------------------------
+# This function requests input from the user and outputs data in the form of a
+# graph and general information about the correlation of the user selections.
+# It serves to embed information from the features.py file given a specific stock
+# instance and metric. It allows the user to interact with the database and
+# different stock instances within it.
+# -----------------------------------------------------------------------------
 def run():
 
     st.empty()
@@ -163,7 +170,10 @@ def run():
         else:
             st.write("Error: Unable to retrieve stock data. Please check your inputs.")
 
-
+# -----------------------------------------------------------------------------
+# This function is used to quantify the correlation of two different stocks
+# and return a key according to the specific value.
+# -----------------------------------------------------------------------------
 def describe(correlation):
 
     if correlation < -.8:
