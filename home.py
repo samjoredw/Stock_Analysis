@@ -5,6 +5,7 @@
 # =============================================================================
 import streamlit as st
 from PIL import Image
+import os
 # pages
 from src import correlation
 
@@ -14,6 +15,9 @@ from src import correlation
 # The home page shows how the database functions and some insights into
 # the data itself.
 # -----------------------------------------------------------------------------
+# setting port
+port = int(os.environ.get('PORT', 8501))
+
 st.set_page_config(page_title="Stock Database Project - Sam Edwards", page_icon="📊")
 
 st.empty()
