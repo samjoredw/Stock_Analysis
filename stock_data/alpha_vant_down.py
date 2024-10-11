@@ -21,7 +21,7 @@ def run_clean():
 
     input("Continue?")
 
-    api_key = "3AEK1F6MI3DCLQNK"
+    api_key = system.get("ALPHA_SECRET")
 
     output_folder = 'stock_data'
     os.makedirs(output_folder, exist_ok=True)
